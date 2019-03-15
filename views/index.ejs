@@ -34,7 +34,12 @@
       <% } %>
 
       <!-- TODO: Error handling -->
-
+      <!-- Error handling -->
+      <% if (locals.error) { %>
+        <div class="alert alert-danger">
+          <p class="lead"><%= error %></p>
+        </div>
+      <% } %>
     </div>
   </div>
 </body>
