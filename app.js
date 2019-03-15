@@ -2,7 +2,6 @@ const express = require('express');
 
 const app = express();
 const port = process.env.PORT || 4000;
-const router = express.Router();
 
 app.set('view engine', 'ejs');
 
@@ -36,12 +35,10 @@ const validate = function(req, res, next) {
   next();
 };
 
-router.get('/', validate, (req, res) => {
+app.get('/', validate, (req, res) => {
   const renderProps = req.query.n ? { n: req.query.n, prime: prime } : {};
   res.render('index', renderProps);
 });
-
-app.use('/', router);
 
 app.listen(port, err => {
   console.log('Listening on port' + port);
