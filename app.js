@@ -45,21 +45,35 @@ app.get('/', validate, async (req, res) => {
   const n = req.query.n;
   const primeKey = `prime.${n}`;
   let prime;
-  let renderProps;
   let useCached = true;
   
-  if (n) {
-    prime = await mc.get(primeKey);
-    if (!prime) {
-      prime = await mc.set(primeKey, `${calculatePrime(n)}`, { expires: 0 });
-      useCached = false;
-    }
-    renderProps = { n, prime: parseInt(prime), useCached };
-  } else {
-    renderProps = {};
-  }
+  // if (n) {
+  //   prime = await mc.get(primeKey);
+  //   if (!prime) {
+  //     prime = await mc.set(primeKey, `${calculatePrime(n)}`, { expires: 0 });
+  //     useCached = false;
+  //   }
+  //   renderProps = { n, prime: parseInt(prime), useCached };
+  // } else {
+  //   renderProps = {};
+  // }
 
-  res.render('index', renderProps);
+  if (n) {
+    mc.get(primeKey, (err, val) => {
+      if (!err && val) {
+        prime = parseInt(val);
+      } else {
+        useCached = false;
+        prime = calculatePrime(n);
+        mc.set(primeKey, `${prime}`, { expires: 0 }, (err, data) => {
+
+        });
+      }
+      res.render('index', { n, prime: parseInt(prime), useCached });
+    });
+  } else {
+    res.render('index', {});
+  }
 });
 
 app.listen(port, err => {
