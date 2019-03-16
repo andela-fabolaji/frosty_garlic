@@ -41,6 +41,7 @@ const validate = function(req, res, next) {
 };
 
 app.get('/', validate, async (req, res) => {
+  console.log(process.env);
   const n = req.query.n;
   const primeKey = `prime.${n}`;
   let prime;
