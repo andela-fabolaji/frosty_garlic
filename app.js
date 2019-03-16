@@ -50,7 +50,7 @@ app.get('/', validate, async (req, res) => {
   if (n) {
     prime = await mc.get(primeKey);
     if (!prime) {
-      prime = await mc.set(primeKey, calculatePrime(n));
+      prime = await mc.set(primeKey, `${calculatePrime(n)}`, { expires: 0 });
       useCached = false;
     }
     renderProps = { n, prime: parseInt(prime), useCached };
@@ -58,7 +58,6 @@ app.get('/', validate, async (req, res) => {
     renderProps = {};
   }
 
-  const renderProps = n ? { n, prime: calculatePrime(n) } : {};
   res.render('index', renderProps);
 });
 
