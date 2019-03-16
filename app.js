@@ -36,8 +36,8 @@ const validate = function(req, res, next) {
 };
 
 app.get('/', validate, (req, res) => {
-  const renderProps = req.query.n ? { n: req.query.n, prime: calculatePrime(n) } : {};
-  console.log(renderProps);
+  const n = req.query.n;
+  const renderProps = n ? { n, prime: calculatePrime(n) } : {};
   res.render('index', renderProps);
 });
 
