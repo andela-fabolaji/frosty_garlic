@@ -65,9 +65,7 @@ app.get('/', validate, async (req, res) => {
       } else {
         useCached = false;
         prime = calculatePrime(n);
-        mc.set(primeKey, `${prime}`, { expires: 0 }, (err, data) => {
-
-        });
+        mc.set(primeKey, `${prime}`, { expires: 0 }, (err, data) => {});
       }
       res.render('index', { n, prime: parseInt(prime), useCached });
     });
