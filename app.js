@@ -1,5 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const MemcachedStore = require('connect-memjs')(session);
+
 const mc = require('./utils/memcached');
 const validate = require('./middlewares/validate');
 const PrimeCtrl = require('./controllers/prime');
@@ -11,6 +14,15 @@ const port = process.env.PORT || 4000;
 app.set('view engine', 'ejs');
 
 // use middleware
+app.use(session({
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: new MemcachedStore({
+    servers: [process.env.MEMCACHIER_SERVERS],
+    prefix: '_session_'
+  })
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

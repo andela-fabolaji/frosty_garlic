@@ -21,11 +21,14 @@ const PrimeController = (req, res) => {
         n,
         prime: parseInt(prime),
         useCached,
-        likes: likes[req.query.n] || 0                                                                    
+        likes: likes[req.query.n] || 0,
+        session: JSON.stringify(req.session)
       });
     });
   } else {
-    res.render('index', {});
+    res.render('index', {
+      session: JSON.stringify(req.session)
+    });
   }
 };
 
